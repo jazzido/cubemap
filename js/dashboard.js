@@ -366,7 +366,40 @@ for (var i = 0; i < sats.length; i++) {
 	sats[i].polarInit();
 }
 
+function refreshPasses() {
+    var next_passes = document.getElementById("next_passes");
 
+    if (!next_passes) return;
+
+	var t = new Date();
+
+	if (t.getTime() < launch_time) {
+		t.setTime(launch_time);
+	}
+
+	var passes = new Array();
+
+	t = Julian_Date(t);
+
+	for (var i = 0; i < sats.length; i++) {
+		passes = passes.concat(get_passes (sats[i], qth, t, 15, 10));
+
+	}
+	for (var i = 0; i < passes.length; i++) {
+		passes[i].polarInit();
+	}
+	passes.sort(function(a,b){return a.aos - b.aos;});
+
+	for (var i = 0; i < passes.length; i++) {
+		var row = next_passes.rows[i+1];
+		row.pass = passes[i];
+
+		row.cells[0].innerHTML = passes[i].sat.name;
+		row.cells[1].innerHTML = Date_Time(passes[i].aos).toLocaleString();
+		row.cells[2].innerHTML = Date_Time(passes[i].los).toLocaleString();
+		row.cells[3].innerHTML = new Number(passes[i].max_el).toFixed(1) + "&deg;";
+	}
+}
 
 var next_passes = document.getElementById("next_passes");
 if (next_passes) {
@@ -380,6 +413,7 @@ if (next_passes) {
 		t = Julian_Date(t);
 		for (var i = 0; i < sats.length; i++) {
 			passes = passes.concat(get_passes (sats[i], qth, t, 15, 10));
+
 		}
 	}
 	for (var i = 0; i < passes.length; i++) {

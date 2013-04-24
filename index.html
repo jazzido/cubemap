@@ -38,6 +38,10 @@
         />
       </svg>
     </div>
+    
+    <input type=text name=lat id=let onChange="qth.lat=Number(this.value); refreshPasses()"></input>
+    <input type=text name=lon id=lon onChange="qth.lon=Number(this.value); refreshPasses()"></input>
+
     <table><tr>
     <td><table id="next_passes"><tr><td>satellite</td><td>AOS</td><td>LOS</td><td>Elevation</td></tr></table></td>
     <td><svg id="polar" overflow="hidden" viewBox="-110 -110 220 220" height="250px" width="250px" version="1.1" xmlns="http://www.w3.org/2000/svg">
