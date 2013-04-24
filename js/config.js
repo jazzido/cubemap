@@ -1,4 +1,4 @@
-// current user
+// current user 
 qth = new qth_t();
 qth.lat=-41.1234;
 qth.lon=-71.2433;
