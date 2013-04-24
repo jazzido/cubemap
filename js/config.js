@@ -1,8 +1,8 @@
 // current user
 qth = new qth_t();
-qth.lat=0;
-qth.lon=0;
-qth.alt=0;
+qth.lat=-41.1234;
+qth.lon=-71.2433;
+qth.alt=800;
 
 // Number of positions to compute
 var COUNT = 300;
@@ -19,9 +19,9 @@ var SAT_CFG_COLOR_SATURATION = 0.7;
 var SAT_CFG_COLOR_VALUE = 255;
 
 // Satellite radio frequency in MHz
-var SAT_TX_FREQUENCY = 437.425;
+var SAT_TX_FREQUENCY = 437.445;
 
-var launch_time = 1366578351000;
+var launch_time = new Date("April 26, 2013 4:26:13 UTC").getTime();
 
 var TLE_FILE=[
     [
