@@ -7,7 +7,7 @@
       <svg
         xmlns="http://www.w3.org/2000/svg" version="1.1"
         id="map"
-        width="80%" 
+        width="900" height="450"
         viewBox="-180 -90 360 180"
         preserveAspectRatio="xMidYMid slice"
         overflow="hidden">
@@ -35,6 +35,7 @@
                    M -180   0 h 360
                    M -180  30 h 360
                    M -180  60 h 360"
+           style="pointer-events: none;"
         />
       </svg>
     </div>
@@ -42,29 +43,77 @@
     <input type=text name=lat id=let onChange="qth.lat=Number(this.value); refreshPasses()"></input>
     <input type=text name=lon id=lon onChange="qth.lon=Number(this.value); refreshPasses()"></input>
 
-    <table><tr>
-    <td><table id="next_passes"><tr><td>satellite</td><td>AOS</td><td>LOS</td><td>Elevation</td></tr></table></td>
-    <td><svg id="polar" overflow="hidden" viewBox="-110 -110 220 220" height="250px" width="250px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <rect height="100%" width="100%" stroke="none" fill="white"></rect>
-    <path d="M 0 -95 v 190 M -95 0 h 190" stroke-width="1" stroke="black" fill="none"></path>
-    <circle r="30" cy="0" cx="0" stroke="black" fill="none"></circle>
-    <circle r="60" cy="0" cx="0" stroke="black" fill="none"></circle>
-    <circle r="90" cy="0" cx="0" stroke="black" fill="none"></circle>
-    <text fill="green" font-size="10" font-family="Verdana" y="-96" x="-4">N</text>
-    <text fill="green" font-size="10" font-family="Verdana" y="105" x="-4">S</text>
-    <text fill="green" font-size="10" font-family="Verdana" y="4" x="96">E</text>
-    <text fill="green" font-size="10" font-family="Verdana" y="4" x="-106">W</text>
-    </svg>
-
-    <div id="sat_name"></div>
-    <div id="sat_az"></div>
-    <div id="sat_el"></div>
-    <div id="sat_freq"></div>
-    </td>
-    </tr></table>
+    <table>
+      <tr>
+        <td>
+          <table id="next_passes"><tr><th>satellite</th><th>AOS</th><th>LOS</th><th>Elevation</th></tr></table></td>
+        <td>
+          <svg id="polar" overflow="hidden" viewBox="-110 -110 220 220" height="250px" width="250px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <rect height="100%" width="100%" stroke="none" fill="white"></rect>
+            <path d="M 0 -95 v 190 M -95 0 h 190" stroke-width="1" stroke="black" fill="none"></path>
+            <circle r="30" cy="0" cx="0" stroke="black" fill="none"></circle>
+            <circle r="60" cy="0" cx="0" stroke="black" fill="none"></circle>
+            <circle r="90" cy="0" cx="0" stroke="black" fill="none"></circle>
+            <text fill="green" font-size="10" font-family="Verdana" y="-96" x="-4">N</text>
+            <text fill="green" font-size="10" font-family="Verdana" y="105" x="-4">S</text>
+            <text fill="green" font-size="10" font-family="Verdana" y="4" x="96">E</text>
+            <text fill="green" font-size="10" font-family="Verdana" y="4" x="-106">W</text>
+          </svg>
+          <div id="sat_name"></div>
+          <div id="sat_az"></div>
+          <div id="sat_el"></div>
+          <div id="sat_freq"></div>
+        </td>
+      </tr>
+    </table>
     <a id="ical">Import to calendar (iCal)</a>
+    <script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
     <script type="text/javascript" src="js/gpredict.min.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/dashboard.js"></script>
+
+    <script type="text/javascript">
+      $(function() {
+
+          var createPoint = function(lat, lng, attrs) {
+              var el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+              el.setAttribute('cx', lng);
+              el.setAttribute('cy', lat);
+              for (var k in attrs)
+                  el.setAttribute(k, attrs[k]);
+              return el;
+          };
+
+          $('svg#map image').click(function(e){
+              var x = e.pageX - e.target.offsetLeft,
+              y = e.pageY - e.target.offsetTop;
+
+              var scale_x = parseInt($('svg#map image').attr('width')) / $('svg#map').width();
+              var scale_y = parseInt($('svg#map image').attr('height')) / $('svg#map').height();
+
+              var lat = -90 + ((y - 9) * scale_y), lng = (x - 9) * scale_x - 180;
+
+              var p = createPoint(lat, lng, { r: 1, stroke: 'pink', fill: 'none', 'stroke-width': 0.5})
+
+              $('svg#map')[0].appendChild(p);
+
+              $('svg#map').trigger('mapclicked', [-lat, lng]);
+          });
+
+          $('svg#map').on('mapclicked', function(e, lat, lng) {
+              // HERE DO WHATEVER YOU WANT WHEN THE MAP IS CLICKED
+              var msg = 'you clicked on lat: ' + lat + ' long: ' + lng;
+
+              // y un poco de reverse geocoding, para joder no mas :)
+              $.getJSON('http://maps.googleapis.com/maps/api/geocode/json', 
+                        { latlng: lat + ',' + lng, sensor: false},
+                   function(data, status, xhr) {
+                       if (data.results.length >= 2) msg += '\n. That is near: ' + data.results[1].formatted_address;
+                       alert(msg);
+                   })
+          });
+
+      });
+    </script>
   </body>
 </html>
