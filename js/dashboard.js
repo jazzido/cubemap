@@ -435,18 +435,18 @@ if (next_passes) {
 	var dtstamp = ISODateString(new Date());
 	var ical=
 		"BEGIN:VCALENDAR\r\n"+
-		"PRODID:-//phonesat.org///EN\r\n"+
+		"PRODID:-//1.cubebug.org///EN\r\n"+
 		"VERSION:2.0\r\n"+
 		"METHOD:REQUEST\r\n";
 	for (var i = 0; i < passes.length; i++) {
 		ical +=
 			"BEGIN:VEVENT\r\n"+
 			"DTSTAMP:" + dtstamp + "\r\n" +
-			"UID:" + dtstamp + "." + i + "@phonesat.org\r\n" +
+			"UID:" + dtstamp + "." + i + "@1.cubebug.org\r\n" +
 			"DTSTART:" + ISODateString(Date_Time(passes[i].aos)) + "\r\n" +
 			"DTEND:" + ISODateString(Date_Time(passes[i].los)) + "\r\n" +
-			"SUMMARY:PhoneSat radio signal tracking\r\n" +
-			"ATTACH:http://www.phonesat.org/\r\n" +
+			"SUMMARY:CubeBug-1 radio signal tracking\r\n" +
+			"ATTACH:http://1.cubebug.org/\r\n" +
 			"LOCATION:" + qth.lat + "\\," + qth.lon + "\r\n" +
 			"END:VEVENT\r\n";
 	}
