@@ -92,16 +92,16 @@
           };
 
           $('svg#map image').click(function(e){
+              $('svg#map circle#qth').remove()
               var offset = $(this).offset();
               var x = e.pageX - offset.left,
               y = e.pageY - offset.top;
 
-              var scale_x = parseInt($('svg#map image').attr('width')) / $('svg#map').width();
-              var scale_y = parseInt($('svg#map image').attr('height')) / $('svg#map').height();
+              var scale = parseInt($('svg#map image').attr('width')) / $('svg#map').width();
 
-              var lat = -90 + (y * scale_y), lng = x * scale_x - 180;
+              var lat = -90 + (y * scale), lng = x * scale - 180;
 
-              var p = createPoint(lat, lng, { r: 1, stroke: 'pink', fill: 'none', 'stroke-width': 0.5})
+              var p = createPoint(lat, lng, { r: 1, stroke: 'pink', fill: 'none', 'stroke-width': 0.5, id: 'qth'});
 
               $('svg#map')[0].appendChild(p);
 
