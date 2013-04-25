@@ -9,8 +9,12 @@
     border-collapse:collapse;
   }
 
+  tr.clickable:hover {
+    background-color: rgb(246, 246, 255);
+  }
+
   tr.selected {
-    background-color: gray;
+    background-color: rgb(100, 100, 150);
     color: white;
   }
 
@@ -73,7 +77,7 @@
     <table>
       <tr>
         <td>
-          <table id="next_passes"><tr><th>satellite</th><th>AOS</th><th>LOS</th><th>Elevation</th></tr></table></td>
+          <table id="next_passes"><tr align=center><th>satellite</th><th>AOS</th><th>LOS</th><th>Elevation</th></tr></table></td>
         <td>
           <svg id="polar" overflow="hidden" viewBox="-110 -110 220 220" height="250px" width="250px" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <rect height="100%" width="100%" stroke="none" fill="white"></rect>
@@ -86,10 +90,12 @@
             <text fill="green" font-size="10" font-family="Verdana" y="4" x="96">E</text>
             <text fill="green" font-size="10" font-family="Verdana" y="4" x="-106">W</text>
           </svg>
-          <div id="sat_name"></div>
-          <div id="sat_az"></div>
-          <div id="sat_el"></div>
-          <div id="sat_freq"></div>
+          <table width="100%">
+              <tr><th align=center colspan=2> <div id="sat_name"></div> </td></tr>
+              <tr><td>Azimuth:</td><td><div id="sat_az"></div></td></tr>
+              <tr><td>Elevation:</td><td><div id="sat_el"></div></td></tr>
+              <tr><td>Frequency:</td><td><div id="sat_freq"></div></td></tr>
+          </table>
         </td>
       </tr>
     </table>
