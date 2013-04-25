@@ -385,6 +385,7 @@ function refreshPasses() {
 		passes = passes.concat(get_passes (sats[i], qth, t, 15, 10));
 
 	}
+	$('svg#polar path[stroke="rgb(255,76,76)"]').remove();
 	for (var i = 0; i < passes.length; i++) {
 		passes[i].polarInit();
 	}
@@ -399,6 +400,32 @@ function refreshPasses() {
 		row.cells[2].innerHTML = Date_Time(passes[i].los).toLocaleString();
 		row.cells[3].innerHTML = new Number(passes[i].max_el).toFixed(1) + "&deg;";
 	}
+
+    createPassesICal(passes);
+}
+
+function createPassesICal(passes) {
+	// Create the download link
+	var dtstamp = ISODateString(new Date());
+	var ical=
+		"BEGIN:VCALENDAR\r\n"+
+		"PRODID:-//1.cubebug.org///EN\r\n"+
+		"VERSION:2.0\r\n"+
+		"METHOD:REQUEST\r\n";
+	for (var i = 0; i < passes.length; i++) {
+		ical +=
+			"BEGIN:VEVENT\r\n"+
+			"DTSTAMP:" + dtstamp + "\r\n" +
+			"UID:" + dtstamp + "." + i + "@1.cubebug.org\r\n" +
+			"DTSTART:" + ISODateString(Date_Time(passes[i].aos)) + "\r\n" +
+			"DTEND:" + ISODateString(Date_Time(passes[i].los)) + "\r\n" +
+			"SUMMARY:CubeBug-1 radio signal tracking\r\n" +
+			"ATTACH:http://1.cubebug.org/\r\n" +
+			"LOCATION:" + qth.lat + "\\," + qth.lon + "\r\n" +
+			"END:VEVENT\r\n";
+	}
+	ical += "END:VCALENDAR\r\n";
+	document.getElementById("ical").setAttribute("href", "data:text/calendar;base64," + window.btoa(ical));
 }
 
 var lat_input = document.getElementById("lat_input");
@@ -472,28 +499,7 @@ if (next_passes) {
 			row.onclick();
 		}
 	}
-
-	// Create the download link
-	var dtstamp = ISODateString(new Date());
-	var ical=
-		"BEGIN:VCALENDAR\r\n"+
-		"PRODID:-//1.cubebug.org///EN\r\n"+
-		"VERSION:2.0\r\n"+
-		"METHOD:REQUEST\r\n";
-	for (var i = 0; i < passes.length; i++) {
-		ical +=
-			"BEGIN:VEVENT\r\n"+
-			"DTSTAMP:" + dtstamp + "\r\n" +
-			"UID:" + dtstamp + "." + i + "@1.cubebug.org\r\n" +
-			"DTSTART:" + ISODateString(Date_Time(passes[i].aos)) + "\r\n" +
-			"DTEND:" + ISODateString(Date_Time(passes[i].los)) + "\r\n" +
-			"SUMMARY:CubeBug-1 radio signal tracking\r\n" +
-			"ATTACH:http://1.cubebug.org/\r\n" +
-			"LOCATION:" + qth.lat + "\\," + qth.lon + "\r\n" +
-			"END:VEVENT\r\n";
-	}
-	ical += "END:VCALENDAR\r\n";
-	document.getElementById("ical").setAttribute("href", "data:text/calendar;base64," + window.btoa(ical));
+    createPassesICal(passes);
 }
 
 // Initiate a first refresh
