@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
+  <title>The CubeMap for CubeBug-1</title>
+  <style TYPE="text/css">
+  table td {
+    border: 1px solid grey;
+    padding: 6px;
+  }
+  </style>
   </head>
   <body>
     <div id="wrapper">
@@ -40,8 +47,8 @@
       </svg>
     </div>
     
-    <input type=text name=lat id=let onChange="qth.lat=Number(this.value); refreshPasses()"></input>
-    <input type=text name=lon id=lon onChange="qth.lon=Number(this.value); refreshPasses()"></input>
+    <input type=text name=lat id=lat_input onChange="qth.lat=Number(this.value); refreshPasses()"></input>
+    <input type=text name=lon id=lon_input onChange="qth.lon=Number(this.value); refreshPasses()"></input>
 
     <table>
       <tr>
