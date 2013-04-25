@@ -72,7 +72,7 @@
     </div>
     
     <input type=text name=lat id=lat_input onChange="qth.lat=Number(this.value); refreshPasses()"></input>
-    <input type=text name=lon id=lon_input onChange="qth.lon=Number(this.value); refreshPasses()"></input>
+    <input type=text name=lon id=lon_input onChange="qth.lon=Number(this.value); refreshPasses()"></input><span id="geocoded"></span>
 
     <table>
       <tr>
@@ -146,6 +146,14 @@
                   qth.lon = lng;
                   refreshPasses();
               }
+
+              $.getJSON('http://maps.googleapis.com/maps/api/geocode/json', 
+                        { latlng: lat + ',' + lng, sensor: false},
+                        function(data, status, xhr) {
+                            if (data.results.length < 2) return;
+                            $('#geocoded').html('(' + data.results[1].formatted_address + ')');
+                        });
+              
           });
 
       });
