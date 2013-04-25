@@ -401,6 +401,14 @@ function refreshPasses() {
 	}
 }
 
+var lat_input = document.getElementById("lat_input");
+var lon_input = document.getElementById("lon_input");
+
+if (lat_input) {
+    lat_input.value = qth.lat;
+	lon_input.value = qth.lon;
+}
+
 var next_passes = document.getElementById("next_passes");
 if (next_passes) {
 	// Compute next passes

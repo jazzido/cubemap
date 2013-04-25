@@ -105,20 +105,21 @@
 
               $('svg#map')[0].appendChild(p);
 
+
               $('svg#map').trigger('mapclicked', [-lat, lng]);
           });
 
           $('svg#map').on('mapclicked', function(e, lat, lng) {
-              // HERE DO WHATEVER YOU WANT WHEN THE MAP IS CLICKED
-              var msg = 'you clicked on lat: ' + lat + ' long: ' + lng;
+              var lat_input = document.getElementById("lat_input");
+              var lon_input = document.getElementById("lon_input");
 
-              // y un poco de reverse geocoding, para joder no mas :)
-              $.getJSON('http://maps.googleapis.com/maps/api/geocode/json', 
-                        { latlng: lat + ',' + lng, sensor: false},
-                   function(data, status, xhr) {
-                       if (data.results.length >= 2) msg += '\n. That is near: ' + data.results[1].formatted_address;
-                       alert(msg);
-                   })
+              if (lat_input) {
+                  lat_input.value = String(lat);
+                  lon_input.value = String(lng);
+                  qth.lat = lat;
+                  qth.lon = lng;
+                  refreshPasses();
+              }
           });
 
       });
