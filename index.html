@@ -92,13 +92,14 @@
           };
 
           $('svg#map image').click(function(e){
-              var x = e.pageX - e.target.offsetLeft,
-              y = e.pageY - e.target.offsetTop;
+              var offset = $(this).offset();
+              var x = e.pageX - offset.left,
+              y = e.pageY - offset.top;
 
               var scale_x = parseInt($('svg#map image').attr('width')) / $('svg#map').width();
               var scale_y = parseInt($('svg#map image').attr('height')) / $('svg#map').height();
 
-              var lat = -90 + ((y - 9) * scale_y), lng = (x - 9) * scale_x - 180;
+              var lat = -90 + (y * scale_y), lng = x * scale_x - 180;
 
               var p = createPoint(lat, lng, { r: 1, stroke: 'pink', fill: 'none', 'stroke-width': 0.5})
 
